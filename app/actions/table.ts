@@ -1,7 +1,7 @@
 "use server";
 
 import dbConnect from "@/app/lib/mongoDB";
-import Company, { ICompany } from "@/models/Company";
+import Company from "@/models/Company";
 import { revalidatePath } from "next/cache";
 import { nanoid } from "nanoid";
 

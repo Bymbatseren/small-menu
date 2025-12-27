@@ -1,7 +1,7 @@
 "use client";
 
 import { QRCodeSVG } from "qrcode.react";
-import { Trash, Copy } from "lucide-react";
+import { Trash } from "lucide-react";
 import { deleteTable } from "@/app/actions/table";
 import { useState } from "react";
 import { useRouter } from "next/navigation";

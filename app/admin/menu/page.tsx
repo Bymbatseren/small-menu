@@ -3,21 +3,15 @@ import MenuItemCard from "@/app/components/MenuItemCard";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 
-export default async function MenuPage({
-  searchParams,
-}: {
-  searchParams: { category?: string };
-}) {
-  const params = await searchParams   
-  const selectedCategoryId =params.category || ""; 
+export default async function MenuPage({ searchParams }: any) {
+  const selectedCategoryId = searchParams?.category ?? "";
 
   const items = await getItems();
   const categories = await getCategories();
 
-  // Шүүж авах
-const filteredItems = selectedCategoryId
-  ? items.filter((item) => item.category?._id === selectedCategoryId)
-  : items;
+  const filteredItems = selectedCategoryId
+    ? items.filter((item) => item.category?._id === selectedCategoryId)
+    : items;
 
   return (
     <div className="space-y-6">

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import DBConnect from "@/app/lib/mongoDB";
 import Company from "@/models/Company";
 import Order from "@/models/Order";
-import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   try {

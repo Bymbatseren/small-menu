@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Loader2, Mail, Lock, User, ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import {Loader2, Mail, ArrowRight } from "lucide-react";
+
+
 import { cn } from "@/app/lib/utils";
-import { OTPInputGroup } from "@/app/forget-password/_components/OTP";
+
 import Step2, { Step3 } from "@/app/forget-password/_components/content";
 import { AuthInputProps } from "@/utils/types";
-import { setServers } from "dns";
+
 
 
 

@@ -9,12 +9,9 @@ import {
     ClipboardList,
     Settings,
     LogOut,
-    X,
-    Menu
 } from "lucide-react";
 import { cn } from "@/app/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
 
 const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },

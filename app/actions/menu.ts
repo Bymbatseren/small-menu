@@ -2,11 +2,10 @@
 
 import dbConnect from "@/app/lib/mongoDB";
 import Item, { IItem } from "@/models/Item";
-import Category, { ICategory } from "@/models/Category";
+import Category from "@/models/Category";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import Company from "@/models/Company";
 
 const JWT_SECRET = process.env.JWT_SECRET!
 export async function createCategory(name: string) {

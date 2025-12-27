@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { getCompanySettings, updateCompanySettings, extendSubscription } from "@/app/actions/settings";
 import { Save, CreditCard, Calendar } from "lucide-react";
-import Image from "next/image";
 
 export default function SettingsPage() {
     const [settings, setSettings] = useState<any>(null);

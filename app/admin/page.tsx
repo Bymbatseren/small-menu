@@ -45,7 +45,7 @@ export default function AdminPage() {
             </p>
           </div>
           <div className="hidden md:block">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/20 animate-pulse-slow">
+            <div className="w-20 h-20 rounded-full bg-linear-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/20 animate-pulse-slow">
               <TrendingUp className="text-white" size={32} />
             </div>
           </div>
