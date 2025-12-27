@@ -25,7 +25,9 @@ export async function middleware(request: NextRequest) {
     try {
       await jwtVerify(token, JWT_SECRET);
       return NextResponse.next();
-    } catch (e) {
+    } catch (error:any) {
+      return { success: false, error: error.message };
+      
     }
   }
   if (!refreshToken) {
@@ -56,7 +58,7 @@ export async function middleware(request: NextRequest) {
 
     return response;
 
-  } catch (e) {
+  } catch (error) {
     return redirectToLogin(request, true);
   }
 }
