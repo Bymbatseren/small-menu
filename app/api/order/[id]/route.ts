@@ -20,10 +20,11 @@ export async function GET(
     }
 
     return NextResponse.json(order);
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(error);
+    const message = error instanceof Error ? error.message : "Server error";
     return NextResponse.json(
-      { message: "Server error" },
+      { message },
       { status: 500 }
     );
   }

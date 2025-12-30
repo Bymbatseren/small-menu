@@ -1,8 +1,10 @@
 import { getItemById, getOneCategory } from "@/app/actions/menu";
 import AddItemPage from "../../add/page";
 
-export default async function EditPage({ params }: any) {
-  const { id } = params;
+import { PageProps } from "@/types";
+
+export default async function EditPage({ params }: PageProps) {
+  const { id } = await params;
 
   const item = await getItemById(id);
   const category = await getOneCategory(id);

@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, ImageIcon, ArrowLeft, Trash2, CheckCircle } from "lucide-react";
-import { Category, Item, Toast } from "@/utils/types";
+import { Category, Item, Toast } from "@/types";
 
 
 
@@ -99,7 +99,7 @@ export default function AddItemPage({ item, category }: { item?: Item, category?
         setLoading(true);
         setError("");
 
-        const form: any = document.getElementById("menuForm");
+        const form = document.getElementById("menuForm") as HTMLFormElement;
         const formData = new FormData(form);
 
         const payload = {
@@ -131,9 +131,14 @@ export default function AddItemPage({ item, category }: { item?: Item, category?
                 addToast(isEdit ? "Цэс амжилттай шинэчлэгдлээ" : "Цэс амжилттай үүсгэгдлээ", "success");
                 router.push("/admin/menu");
             } else throw new Error(res.error || "Алдаа гарлаа");
-        } catch (err: any) {
-            setError(err.message);
-            addToast(err.message, "error");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+                addToast(err.message, "error");
+            } else {
+                setError("An error occurred");
+                addToast("An error occurred", "error");
+            }
         } finally {
             setLoading(false);
         }

@@ -5,25 +5,27 @@ import { updateOrderStatus } from "@/app/actions/order";
 import { Clock, CheckCircle, ChefHat, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { Order, OrderStatus } from "@/types";
+
 interface OrderCardProps {
-  order: any;
+  order: Order;
   onStatusChange?: (
     orderId: string,
-    status: "PENDING" | "IN_PROGRESS" | "DONE"
+    status: OrderStatus
   ) => void;
   showCompletedTime?: boolean; // ✅ ШИНЭ
 }
 
 export default function OrderCard({
   order,
-  onStatusChange = () => {},
+  onStatusChange = () => { },
   showCompletedTime = false,
 }: OrderCardProps) {
   const [currentOrder, setCurrentOrder] = useState(order);
   const [loading, setLoading] = useState(false);
 
   const handleStatusChange = async (
-    newStatus: "PENDING" | "IN_PROGRESS" | "DONE"
+    newStatus: OrderStatus
   ) => {
     setLoading(true);
 
@@ -45,7 +47,7 @@ export default function OrderCard({
     }
   };
 
-  const statusConfig: any = {
+  const statusConfig: Record<OrderStatus, { color: string; bg: string; border: string; icon: any; label: string }> = {
     PENDING: {
       color: "text-amber-400",
       bg: "bg-amber-500/10",
@@ -99,7 +101,7 @@ export default function OrderCard({
           <div className="flex justify-between items-start mb-6 relative z-10">
             <div>
               <h3 className="font-bold text-xl text-white">
-                Table {currentOrder.tableName}
+                Table {currentOrder.tableCode}
               </h3>
               <p className="text-xs text-zinc-500 mt-1">
                 {new Date(currentOrder.createdAt).toLocaleTimeString([], {
@@ -134,31 +136,34 @@ export default function OrderCard({
 
           {/* Items */}
           <div className="space-y-3 mb-8 relative z-10">
-            {currentOrder.items.map((orderItem: any, idx: number) => (
-              <div
-                key={idx}
-                className="flex justify-between items-center text-sm py-2 border-b border-white/5 last:border-0"
-              >
-                <div className="flex items-center gap-3 text-zinc-300">
-                  <span className="w-6 h-6 flex items-center justify-center rounded bg-zinc-800 text-xs font-bold">
-                    {orderItem.quantity}
-                  </span>
-                  {orderItem.item?.title || (
-                    <span className="italic text-red-400">
-                      Deleted Item
+            {currentOrder.items.map((orderItem, idx) => {
+              const item = typeof orderItem.item === 'string' ? null : orderItem.item;
+              return (
+                <div
+                  key={idx}
+                  className="flex justify-between items-center text-sm py-2 border-b border-white/5 last:border-0"
+                >
+                  <div className="flex items-center gap-3 text-zinc-300">
+                    <span className="w-6 h-6 flex items-center justify-center rounded bg-zinc-800 text-xs font-bold">
+                      {orderItem.quantity}
                     </span>
-                  )}
-                </div>
-                <span className="text-zinc-500 font-mono">
-                  {orderItem.item
-                    ? `$${(
-                        orderItem.item.price *
+                    {item?.title || (
+                      <span className="italic text-red-400">
+                        Deleted Item
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-zinc-500 font-mono">
+                    {item
+                      ? `$${(
+                        item.price *
                         orderItem.quantity
                       ).toFixed(2)}`
-                    : "-"}
-                </span>
-              </div>
-            ))}
+                      : "-"}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
           {/* Footer */}
@@ -177,7 +182,7 @@ export default function OrderCard({
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() =>
-                    handleStatusChange("IN_PROGRESS")
+                    handleStatusChange(OrderStatus.IN_PROGRESS)
                   }
                   disabled={loading}
                   className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500
@@ -190,7 +195,7 @@ export default function OrderCard({
               {currentOrder.status === "IN_PROGRESS" && (
                 <motion.button
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => handleStatusChange("DONE")}
+                  onClick={() => handleStatusChange(OrderStatus.DONE)}
                   disabled={loading}
                   className="px-4 py-2 rounded-xl bg-green-600 hover:bg-green-500
                   text-white text-sm font-bold flex items-center gap-2"

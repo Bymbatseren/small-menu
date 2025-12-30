@@ -25,10 +25,13 @@ export async function middleware(request: NextRequest) {
     try {
       await jwtVerify(token, JWT_SECRET);
       return NextResponse.next();
-    } catch (error:any) {
-      return { success: false, error: error.message };
-      
-    }
+    } catch (error) {
+  const message =
+    error instanceof Error ? error.message : String(error);
+
+  return { success: false, error: message };
+}
+
   }
   if (!refreshToken) {
     return redirectToLogin(request);

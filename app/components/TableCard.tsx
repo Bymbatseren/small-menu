@@ -18,12 +18,12 @@ interface TableCardProps {
 export default function TableCard({ table }: TableCardProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
-    const orderUrl = `https://small-menu.vercel.app/?table=${table.tableCode}`;
+    const orderUrl = `http://localhost:3000/order/?table=${table.tableCode}`;
 
     const handleDelete = async () => {
         if (!confirm(`Delete ${table.name}?`)) return;
         setLoading(true);
-        await deleteTable(table._id);
+        await deleteTable(table._id,table.tableCode);
         setLoading(false);
         router.refresh();
     };

@@ -12,7 +12,7 @@ interface AuthInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label: string;
 }
 
-export const  AuthInput = ({ icon: Icon, label, className, ...props }: AuthInputProps) => {
+export const AuthInput = ({ icon: Icon, label, className, ...props }: AuthInputProps) => {
     return (
         <div className="group relative">
             <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-blue-500">
@@ -57,8 +57,12 @@ export const SignInForm = () => {
 
             router.push("/admin");
             router.refresh();
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unknown error occurred");
+            }
         } finally {
             setLoading(false);
         }
@@ -103,11 +107,11 @@ export const SignInForm = () => {
                     {error}
                 </motion.div>
             )}
-              <p className="text-end text-sm text-gray-500">
-                 <Link href="/forget-password" className="font-semibold  text-blue-600 hover:text-blue-500 hover:underline">
-                   Нууц үг мартсан?
+            <p className="text-end text-sm text-gray-500">
+                <Link href="/forget-password" className="font-semibold  text-blue-600 hover:text-blue-500 hover:underline">
+                    Нууц үг мартсан?
                 </Link>
-              </p>
+            </p>
 
             <button
                 type="submit"
@@ -152,10 +156,14 @@ export const SignUpForm = () => {
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || "Something went wrong");
 
-            router.push("/sign-in"); 
+            router.push("/sign-in");
             router.refresh();
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unknown error occurred");
+            }
         } finally {
             setLoading(false);
         }

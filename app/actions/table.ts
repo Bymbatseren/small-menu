@@ -4,6 +4,7 @@ import dbConnect from "@/app/lib/mongoDB";
 import Company from "@/models/Company";
 import { revalidatePath } from "next/cache";
 import { nanoid } from "nanoid";
+import Order from "@/models/Order";
 
 // Mocking getting the current company ID. 
 // In a real app, this would come from the session/auth.
@@ -21,7 +22,6 @@ import { nanoid } from "nanoid";
 // Let's check `models/Company.ts` again.
 
 async function getCompanyId() {
-    // TODO: Replace with actual auth logic
     const company = await Company.findOne().sort({ createdAt: -1 });
     return company?._id;
 }
@@ -33,9 +33,6 @@ export async function getTables() {
 
     const company = await Company.findById(companyId).lean();
     if (!company) return [];
-
-    // Return tables with ID converted to string if they have _id (subdocs usually do)
-    // The schema defined `tables: [TableSubSchema]`. Subdocuments have _id by default.
     return company.tables.map((t: any) => ({
         ...t,
         _id: t._id.toString(),
@@ -48,7 +45,7 @@ export async function addTable(name: string) {
     if (!companyId) return { success: false, error: "No company found" };
 
     try {
-        const tableCode = nanoid(6); // Short unique code
+        const tableCode = nanoid(9);
         await Company.findByIdAndUpdate(companyId, {
             $push: { tables: { name, tableCode } }
         });
@@ -59,7 +56,8 @@ export async function addTable(name: string) {
     }
 }
 
-export async function deleteTable(tableId: string) {
+export async function deleteTable(tableId: string,tableCode:string) {
+    console.log(tableId)
     await dbConnect();
     const companyId = await getCompanyId();
     if (!companyId) return { success: false, error: "No company found" };
@@ -68,8 +66,9 @@ export async function deleteTable(tableId: string) {
         await Company.findByIdAndUpdate(companyId, {
             $pull: { tables: { _id: tableId } }
         });
+        await Order.deleteMany({tableCode})
         revalidatePath("/admin/tables");
-        return { success: true };
+        return { success: true , message:"success"};
     } catch (error: any) {
         return { success: false, error: error.message };
     }

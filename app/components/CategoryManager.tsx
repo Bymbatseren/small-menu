@@ -5,7 +5,9 @@ import { createCategory, deleteCategory } from "@/app/actions/menu";
 import { Trash, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function CategoryManager({ categories }: { categories: any[] }) {
+import { Category } from "@/types";
+
+export default function CategoryManager({ categories }: { categories: Category[] }) {
     const router = useRouter();
     const [newCategory, setNewCategory] = useState("");
     const [loading, setLoading] = useState(false);

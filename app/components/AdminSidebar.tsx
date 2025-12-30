@@ -28,10 +28,6 @@ export default function AdminSidebar({
     open?: boolean;
     setOpen?: (open: boolean) => void
 }) {
-    // If setOpen is provided, we are in mobile controlled mode. 
-    // Otherwise, we default to always visible (desktop sidebar).
-    // Actually, to make it cleaner, let handles its own state for mobile or rely on props.
-    // I will make it accept props for mobile visibility.
 
     const pathname = usePathname();
 

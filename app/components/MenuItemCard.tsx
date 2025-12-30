@@ -6,14 +6,14 @@ import { toggleItemVisibility, deleteItem } from "@/app/actions/menu";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { MenuItemProps } from "@/utils/types";
+import { Item } from "@/types";
 
 
 
-export default function MenuItemCard({ item }: MenuItemProps) {
+export default function MenuItemCard({ item }: { item: Item }) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
-      const [showConfirm, setShowConfirm] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
 
     const handleToggle = async () => {
         setLoading(true);
@@ -35,7 +35,7 @@ export default function MenuItemCard({ item }: MenuItemProps) {
             animate={{ opacity: 1, scale: 1 }}
             className="group relative bg-[#121212] rounded-3xl overflow-hidden border border-white/5 hover:border-blue-500/30 transition-all duration-500 shadow-xl"
         >
-            
+
             <div className="h-58 lg:h-80 relative overflow-hidden bg-zinc-900">
                 {item.image ? (
                     <motion.img
@@ -59,23 +59,23 @@ export default function MenuItemCard({ item }: MenuItemProps) {
             </div>
             <div className="p-6">
                 <div className="flex justify-between items-start mb-2">
-                    
-                        <h3 className="font-bold text-lg text-white leading-tight mb-1">{item.title}</h3>
-                       
-                    
+
+                    <h3 className="font-bold text-lg text-white leading-tight mb-1">{item.title}</h3>
+
+
                     <p className="font-bold text-xl text-transparent bg-clip-text bg-blue-500 to-amber-200">
                         {item.price.toLocaleString()}₮
                     </p>
                 </div>
-                 <span className="inline-block  p-1 rounded text-[10px] font-bold uppercase tracking-wider bg-white/5 text-gray-400">
-                            {item.category?.name || "General"}
-                        </span>
+                <span className="inline-block  p-1 rounded text-[10px] font-bold uppercase tracking-wider bg-white/5 text-gray-400">
+                    {typeof item.category === 'object' && item.category !== null && 'name' in item.category ? item.category.name : "General"}
+                </span>
 
                 <p className="text-gray-500 mt-3 text-sm mb-6 line-clamp-2 min-h-10 leading-relaxed">
                     {item.description || "No description provided."}
                 </p>
 
-                
+
                 <div className="grid grid-cols-3 gap-3">
                     <button
                         onClick={handleToggle}
@@ -93,7 +93,7 @@ export default function MenuItemCard({ item }: MenuItemProps) {
                         <Edit size={18} />
                     </Link>
                     <button
-                        onClick={()=>setShowConfirm(true)}
+                        onClick={() => setShowConfirm(true)}
                         disabled={loading}
                         className="flex items-center justify-center py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors"
                         title="Delete Item"
@@ -103,19 +103,19 @@ export default function MenuItemCard({ item }: MenuItemProps) {
                 </div>
             </div>
             <AnimatePresence>
-                            {showConfirm && (
-                                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                                    <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="bg-gray-900 rounded-2xl p-8 max-w-sm w-full text-center space-y-6">
-                                        <p className="text-white text-lg font-medium">Та энэ цэсийг устгахдаа итгэлтэй байна уу?</p>
-                                        <div className="flex justify-center gap-4">
-                                            <button onClick={() => setShowConfirm(false)} className="px-6 py-2 rounded-xl bg-gray-700 hover:bg-gray-600 text-white transition">Цуцлах</button>
-                                            <button onClick={handleDelete} className="px-6 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white transition">Устгах</button>
-                                        </div>
-                                    </motion.div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                {showConfirm && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                        <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="bg-gray-900 rounded-2xl p-8 max-w-sm w-full text-center space-y-6">
+                            <p className="text-white text-lg font-medium">Та энэ цэсийг устгахдаа итгэлтэй байна уу?</p>
+                            <div className="flex justify-center gap-4">
+                                <button onClick={() => setShowConfirm(false)} className="px-6 py-2 rounded-xl bg-gray-700 hover:bg-gray-600 text-white transition">Цуцлах</button>
+                                <button onClick={handleDelete} className="px-6 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white transition">Устгах</button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
-        
+
     );
 }
