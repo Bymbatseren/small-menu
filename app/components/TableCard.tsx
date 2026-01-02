@@ -18,7 +18,7 @@ interface TableCardProps {
 export default function TableCard({ table }: TableCardProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
-    const orderUrl = `http://localhost:3000/order/?table=${table.tableCode}`;
+    const orderUrl = `http://menu-snap.vercel.app/table/${table.tableCode}`;
 
     const handleDelete = async () => {
         if (!confirm(`Delete ${table.name}?`)) return;

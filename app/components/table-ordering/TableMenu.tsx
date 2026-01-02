@@ -5,6 +5,7 @@ import { Category, Item } from "@/types";
 import CategoryList from "./CategoryList";
 import ProductCard from "./ProductCard";
 import CartFloatingButton from "./CartFloatingButton";
+import CartDrawer from "./CartDrawer";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search } from "lucide-react";
 
@@ -22,6 +23,7 @@ export default function TableMenu({
     const [activeCategory, setActiveCategory] = useState<string>("all");
     const [cart, setCart] = useState<{ item: Item; quantity: number }[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [isCartOpen, setIsCartOpen] = useState(false);
 
     const filteredItems = useMemo(() => {
         return items.filter((item) => {
@@ -52,6 +54,27 @@ export default function TableMenu({
         });
     };
 
+    const updateQuantity = (itemId: string, delta: number) => {
+        setCart((prev) => {
+            return prev
+                .map((i) => {
+                    if (i.item._id === itemId) {
+                        return { ...i, quantity: i.quantity + delta };
+                    }
+                    return i;
+                })
+                .filter((i) => i.quantity > 0);
+        });
+    };
+
+    const handleCheckout = () => {
+        if (confirm("Захиалга баталгаажуулах уу?")) {
+            alert("Захиалга амжилттай илгээгдлээ!");
+            setCart([]);
+            setIsCartOpen(false);
+        }
+    };
+
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     const totalPrice = cart.reduce(
         (sum, item) => sum + item.item.price * item.quantity,
@@ -59,9 +82,9 @@ export default function TableMenu({
     );
 
     return (
-        <div className="min-h-screen  pb-32">
-           
-            <div className="sticky top-0 z-40  backdrop-blur-md  ">
+        <div className="min-h-screen bg-gradient-to-br from-emerald-950 via-teal-950 to-zinc-900 text-emerald-50 pb-32">
+
+            <div className="sticky top-0 z-40 backdrop-blur-md">
                 <div className="p-4 flex items-center justify-between">
                     <div>
                         <p className="text-xs text-white font-medium">Ширээ</p>
@@ -87,7 +110,7 @@ export default function TableMenu({
                 />
             </div>
 
-        
+
             <div className="p-4">
                 {filteredItems.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 text-gray-400">
@@ -111,10 +134,15 @@ export default function TableMenu({
             <CartFloatingButton
                 itemCount={totalItems}
                 totalPrice={totalPrice}
-                onClick={() => {
-                    
-                    alert("Сагс харах хэсэг удахгүй хийгдэнэ!");
-                }}
+                onClick={() => setIsCartOpen(true)}
+            />
+
+            <CartDrawer
+                isOpen={isCartOpen}
+                onClose={() => setIsCartOpen(false)}
+                cart={cart}
+                onUpdateQuantity={updateQuantity}
+                onCheckout={handleCheckout}
             />
         </div>
     );

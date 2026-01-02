@@ -7,7 +7,7 @@ import Image from "next/image";
 
 
 interface ProductCardProps {
-    product: Item; // Using Item type from existing types
+    product: Item;
     onAddToCart: (product: Item) => void;
 }
 
@@ -17,7 +17,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-white/5 rounded-3xl p-3  backdrop-blur-sm shadow-sm border border-white/10 relative overflow-hidden group"
+            className="bg-white/5 rounded-3xl p-3 shadow-lg  backdrop-blur-md shadow-sm border border-white/10 relative overflow-hidden group"
         >
             <div className="relative aspect-square rounded-2xl overflow-hidden mb-3 bg-gray-200">
                 {product.image ? (
@@ -35,7 +35,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
             </div>
 
             <div className="space-y-1">
-                <h3 className="font-semibold text-white text-base line-clamp-1 leading-tight">
+                <h3 className="font-semibold text-zinc-100 text-base line-clamp-1 leading-tight">
                     {product.title}
                 </h3>
               
@@ -48,7 +48,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
                     <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={() => onAddToCart(product)}
-                        className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors shadow-lg shadow-black/20"
+                        className="w-8 h-8 rounded-full bg-amber-500 hover:bg-amber-400 text-white flex items-center justify-center hover:bg-gray-800 transition-colors shadow-lg shadow-black/20"
                     >
                         <Plus size={16} />
                     </motion.button>

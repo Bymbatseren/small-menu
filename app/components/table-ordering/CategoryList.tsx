@@ -30,7 +30,8 @@ export default function CategoryList({
                     {activeCategory === "all" && (
                         <motion.div
                             layoutId="activeCategory"
-                            className="absolute inset-0 bg-blue-500 rounded-full"
+                            className="absolute inset-0 bg-amber-500 hover:bg-amber-400 
+               text-zinc-900 font-semibold  rounded-full"
                             initial={false}
                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
                         />
@@ -53,7 +54,8 @@ export default function CategoryList({
                         {activeCategory === category._id && (
                             <motion.div
                                 layoutId="activeCategory"
-                                className="absolute inset-0 bg-blue-500 rounded-full"
+                                className="absolute inset-0 bg-amber-500 hover:bg-amber-400 
+               text-zinc-900 font-semibold  rounded-full"
                                 initial={false}
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             />
